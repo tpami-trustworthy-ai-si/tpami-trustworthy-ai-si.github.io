@@ -1,0 +1,114 @@
+---
+import { site } from '../config/site';
+import { navItems } from '../config/content';
+import Icon from './Icon.astro';
+
+const submissionOpen = site.submissionStatus === 'open';
+---
+
+<header
+  data-site-header
+  class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors duration-300"
+>
+  <div class="container-page">
+    <div class="flex h-16 items-center justify-between gap-4">
+      <!-- Wordmark -->
+      <a href="#top" class="group flex items-center gap-3">
+        <span
+          class="grid size-9 shrink-0 place-items-center rounded-xl bg-linear-to-br from-brand-500 to-accent-500 text-white shadow-lg shadow-brand-600/25"
+        >
+          <Icon name="shield" class="size-4.5" />
+        </span>
+        <span class="flex flex-col leading-tight">
+          <span class="nav-mark-sub">{site.journalShort}</span>
+          <span class="nav-mark-title">Trustworthy AI Special Issue</span>
+        </span>
+      </a>
+
+      <!-- Desktop navigation -->
+      <nav class="hidden items-center gap-0.5 xl:flex" aria-label="Sections">
+        {
+          navItems.map((item) => (
+            <a class="nav-link" data-nav-link href={`#${item.id}`}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button type="button" class="nav-icon-btn" data-theme-toggle aria-label="Switch color theme">
+          <Icon name="sun" class="size-4.5 dark:hidden" />
+          <Icon name="moon" class="hidden size-4.5 dark:block" />
+        </button>
+
+        <a
+          href={submissionOpen ? site.links.submission : undefined}
+          target="_blank"
+          rel="noopener noreferrer"
+          class:list={[
+            'btn btn-primary hidden !px-4 !py-2 text-xs sm:inline-flex',
+            !submissionOpen && 'btn-disabled',
+          ]}
+          aria-disabled={submissionOpen ? undefined : 'true'}
+          tabindex={submissionOpen ? undefined : -1}
+        >
+          Submit
+          <Icon name="arrow-up-right" class="size-3.5" />
+        </a>
+
+        <button
+          type="button"
+          class="nav-icon-btn xl:hidden"
+          data-nav-toggle
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          aria-label="Open navigation"
+        >
+          <Icon name="menu" class="size-5" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile panel -->
+  <div
+    id="mobile-nav"
+    data-nav-panel
+    class="hidden border-t border-slate-200 bg-white xl:hidden dark:border-white/10 dark:bg-ink-900"
+  >
+    <nav class="container-page flex flex-col py-3" aria-label="Sections">
+      {
+        navItems.map((item) => (
+          <a
+            href={`#${item.id}`}
+            class="rounded-lg px-2 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={submissionOpen ? site.links.submission : undefined}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={[
+          'btn btn-primary mt-3 mb-1',
+          !submissionOpen && 'btn-disabled',
+        ]}
+        aria-disabled={submissionOpen ? undefined : 'true'}
+        tabindex={submissionOpen ? undefined : -1}
+      >
+        Submit Manuscript
+        <Icon name="arrow-up-right" class="size-4" />
+      </a>
+    </nav>
+  </div>
+
+  <!-- Scroll progress -->
+  <div
+    data-scroll-progress
+    class="h-0.5 origin-left scale-x-0 bg-linear-to-r from-brand-500 to-accent-400 transition-transform duration-150"
+  >
+  </div>
+</header>

@@ -1,0 +1,32 @@
+---
+import { importantDates, scheduleNotice } from '../config/dates';
+import { formatMilestone } from '../lib/dates';
+import { site } from '../config/site';
+import SectionHeader from './SectionHeader.astro';
+---
+
+<section id="dates" class="section bg-white dark:bg-ink-950">
+  <div class="container-page">
+    <SectionHeader eyebrow="Schedule" title="Important Dates" lead={site.rollingNotice} />
+    <dl class="mt-8 max-w-4xl overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10">
+      {importantDates.map((milestone) => (
+        <div class:list={[
+          'flex flex-col gap-2 border-b border-slate-200 px-5 py-5 last:border-0 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:px-6 dark:border-white/10',
+          milestone.highlight && 'bg-brand-50/70 dark:bg-accent-400/[0.07]',
+        ]}>
+          <dt>
+            <span class:list={['font-semibold', milestone.highlight ? 'text-brand-700 dark:text-accent-300' : 'text-slate-900 dark:text-white']}>
+              {milestone.label}
+            </span>
+            {milestone.target && <span class="ml-2 inline-flex rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:bg-white/10 dark:text-slate-300">Target</span>}
+            {milestone.note && <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">{milestone.note}</p>}
+          </dt>
+          <dd class:list={['shrink-0 text-base font-semibold tabular-nums', milestone.highlight && 'text-brand-700 dark:text-accent-300']}>
+            {milestone.date ? <time datetime={milestone.date}>{formatMilestone(milestone)}</time> : formatMilestone(milestone)}
+          </dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-5 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">{scheduleNotice}</p>
+  </div>
+</section>

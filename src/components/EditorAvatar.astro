@@ -1,0 +1,54 @@
+---
+import type { Editor } from '../config/editors';
+import { resolvePhoto, initials } from '../lib/photos';
+
+interface Props {
+  editor: Editor;
+  class?: string;
+  /** Tailwind text size for the monogram fallback. */
+  textClass?: string;
+}
+
+const { editor, class: className = 'size-20', textClass = 'text-xl' } = Astro.props;
+const src = resolvePhoto(editor);
+
+// Deterministic gradient per editor so monograms are not all identical.
+const gradients = [
+  'from-brand-600 to-accent-500',
+  'from-indigo-500 to-sky-500',
+  'from-violet-600 to-brand-500',
+  'from-cyan-500 to-brand-600',
+  'from-blue-600 to-cyan-400',
+];
+const seed = editor.id.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+const gradient = gradients[seed % gradients.length];
+---
+
+{
+  src ? (
+    <img
+      src={src}
+      alt={`Portrait of ${editor.name}`}
+      width="320"
+      height="320"
+      loading="lazy"
+      decoding="async"
+      class:list={[
+        'shrink-0 rounded-full object-cover ring-1 ring-slate-900/5 dark:ring-white/10',
+        className,
+      ]}
+    />
+  ) : (
+    <span
+      aria-hidden="true"
+      class:list={[
+        'grid shrink-0 place-items-center rounded-full bg-linear-to-br font-semibold text-white ring-1 ring-slate-900/5 dark:ring-white/10',
+        gradient,
+        textClass,
+        className,
+      ]}
+    >
+      {initials(editor.name)}
+    </span>
+  )
+}

@@ -1,0 +1,126 @@
+---
+import { site } from '../config/site';
+import { submission } from '../config/content';
+import { getMilestone, formatMilestone } from '../lib/dates';
+import SectionHeader from './SectionHeader.astro';
+import CopyChip from './CopyChip.astro';
+import Icon from './Icon.astro';
+
+const deadline = getMilestone('submission');
+const deadlineText = deadline ? formatMilestone(deadline) : '';
+const open = site.submissionStatus === 'open';
+---
+
+<section id="submission" class="section bg-slate-50 dark:bg-ink-900">
+  <div class="container-page">
+    <SectionHeader
+      eyebrow={submission.eyebrow}
+      title={submission.title}
+      lead={submission.intro}
+    />
+
+    <div class="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-14">
+      <!-- Steps -->
+      <div class="lg:col-span-7">
+        <ol class="space-y-4">
+          {
+            submission.steps.map((step, index) => (
+              <li class="card flex gap-5" data-reveal>
+                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-linear-to-br from-brand-600 to-accent-500 font-mono text-sm font-semibold text-white">
+                  {index + 1}
+                </span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-base font-semibold">{step.title}</h3>
+                  <p class="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    {step.body}
+                  </p>
+                  {'showArticleType' in step && step.showArticleType && (
+                    <CopyChip class="mt-4" value={site.articleType} label="Copy Article Type" />
+                  )}
+                  {index === 0 && (
+                    <a
+                      href={site.links.authorGuidelines}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline hover:underline-offset-4 dark:text-accent-400"
+                    >
+                      TPAMI author guidelines
+                      <Icon name="arrow-up-right" class="size-3.5" />
+                    </a>
+                  )}
+                  {index === 1 && (
+                    <a
+                      href={site.links.submission}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:underline hover:underline-offset-4 dark:text-accent-400"
+                    >
+                      IEEE Submission Portal
+                      <Icon name="arrow-up-right" class="size-3.5" />
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+
+        <ul class="mt-8 space-y-2.5">
+          {
+            submission.notes.map((note) => (
+              <li class="flex gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                <Icon name="check" class="mt-0.5 size-4 shrink-0 text-slate-400 dark:text-slate-600" />
+                <span>{note}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Deadline card + paper types -->
+      <div class="lg:col-span-5">
+        <div class="lg:sticky lg:top-24 space-y-4">
+          <div
+            class="overflow-hidden rounded-2xl border border-slate-900/5 bg-ink-950 p-6 text-white shadow-xl shadow-slate-900/10 dark:border-white/10"
+            data-reveal
+          >
+            <p class="mb-5 text-xs font-semibold tracking-wider text-accent-300 uppercase">{open ? 'Submissions open' : 'Submission status'}</p>
+            <p class="text-xs font-semibold tracking-[0.16em] text-slate-400 uppercase">
+              Submission deadline
+            </p>
+            <p class="mt-2 text-2xl font-semibold tracking-tight">{deadlineText}</p>
+            <p class="mt-3 text-sm leading-relaxed text-slate-300">{site.rollingNotice}</p>
+            <a
+              href={open ? site.links.submission : undefined}
+              aria-disabled={open ? undefined : 'true'}
+              tabindex={open ? undefined : -1}
+              target="_blank"
+              rel="noopener noreferrer"
+              class:list={['btn btn-primary mt-5 w-full', !open && 'btn-disabled']}
+            >
+              {open ? 'Submit Manuscript' : site.submissionStatus === 'closed' ? 'Submissions closed' : 'Submissions opening soon'}
+              <Icon name="arrow-up-right" class="size-4" />
+            </a>
+            <p class="mt-3 text-center text-xs text-slate-400">
+              IEEE Submission Portal
+            </p>
+          </div>
+
+          {
+            submission.paperTypes.map((type) => (
+              <div class="card card-hover" data-reveal>
+                <h3 class="text-sm font-semibold">{type.title}</h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                  {type.body}
+                </p>
+                {type.title === 'Extended conference papers' && (
+                  <a href={site.links.authorGuidelines} target="_blank" rel="noopener noreferrer" class="link-underline mt-3 inline-block text-sm">TPAMI Author Guidelines</a>
+                )}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

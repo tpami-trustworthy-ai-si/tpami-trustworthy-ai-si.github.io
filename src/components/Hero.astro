@@ -1,0 +1,60 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { site } from '../config/site';
+import { submissionDeadline, formatDate } from '../config/dates';
+import { withBase } from '../lib/url';
+import Icon from './Icon.astro';
+
+const open = site.submissionStatus === 'open';
+const statusCopy = { upcoming: 'Submissions opening soon', open: 'Submissions open', closed: 'Submissions closed' };
+const cfpAvailable = Boolean(site.cfpPdf) && fs.existsSync(path.join(process.cwd(), 'public', site.cfpPdf));
+---
+
+<section id="top" class="relative isolate overflow-hidden bg-ink-950 text-white">
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="bg-grid mask-fade-b absolute inset-0"></div>
+    <div class="absolute -top-40 -left-32 size-[38rem] rounded-full bg-brand-600/25 blur-[130px]"></div>
+    <div class="absolute -top-24 right-[-10rem] size-[34rem] rounded-full bg-accent-500/20 blur-[130px]"></div>
+  </div>
+  <div class="container-page pt-24 pb-12 sm:pt-24 sm:pb-14">
+    {site.banner.text && (
+      <p class="mb-6 flex items-start gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm leading-relaxed text-slate-300">
+        <Icon name="check-badge" class="mt-0.5 size-4 shrink-0 text-accent-300" />
+        <span>{site.banner.text}</span>
+      </p>
+    )}
+    <div class="max-w-5xl">
+      <p class="inline-flex items-center gap-2 rounded-full border border-accent-400/25 bg-accent-400/10 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-accent-300 uppercase">
+        <span class="size-1.5 rounded-full bg-current" aria-hidden="true"></span>
+        {statusCopy[site.submissionStatus]}
+      </p>
+      <h1 class="mt-5 text-[2rem] leading-[1.15] font-semibold tracking-tight text-white sm:text-[2.625rem] lg:text-5xl">
+        {site.title}:
+        <span class="text-gradient mt-3 block text-2xl leading-[1.25] sm:text-[1.875rem] lg:text-[2rem]">{site.subtitle}</span>
+      </h1>
+      <p class="mt-4 max-w-3xl text-base leading-relaxed text-slate-300">{site.tagline}</p>
+      <p class="mt-3 text-xs leading-relaxed text-slate-400 sm:text-sm">
+        A Special Issue of <span class="text-slate-200">{site.journal}</span>
+      </p>
+      <div class="mt-6 border-l-2 border-accent-400 pl-4">
+        <p class="text-base font-semibold text-white">
+          Submission deadline: <time datetime={submissionDeadline}>{formatDate(submissionDeadline)}</time>
+        </p>
+        <p class="mt-1 text-sm text-slate-300">{site.rollingNotice}</p>
+      </div>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href={open ? site.links.submission : undefined} target="_blank" rel="noopener noreferrer"
+          class:list={['btn btn-primary', !open && 'btn-disabled']}
+          aria-disabled={open ? undefined : 'true'} tabindex={open ? undefined : -1}>
+          {open ? 'Submit Manuscript' : statusCopy[site.submissionStatus]}
+          <Icon name="arrow-up-right" class="size-4" />
+        </a>
+        <a href={cfpAvailable ? withBase(site.cfpPdf) : '#topics'} class="btn btn-on-dark" download={cfpAvailable || undefined}>
+          {cfpAvailable ? 'Download CFP' : 'View Topics'}
+          <Icon name={cfpAvailable ? 'document' : 'arrow-right'} class="size-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,108 @@
+---
+import { site } from '../config/site';
+import { navItems } from '../config/content';
+import { formatDate } from '../config/dates';
+import Icon from './Icon.astro';
+
+const year = site.lastUpdated.slice(0, 4);
+const updated = formatDate(site.lastUpdated);
+---
+
+<footer class="bg-ink-950 text-slate-400">
+  <div class="container-page py-14">
+    <div class="grid gap-10 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <div class="flex items-center gap-3">
+          <span
+            class="grid size-9 shrink-0 place-items-center rounded-xl bg-linear-to-br from-brand-500 to-accent-500 text-white"
+          >
+            <Icon name="shield" class="size-4.5" />
+          </span>
+          <div class="leading-tight">
+            <p class="text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
+              {site.journalShort}
+            </p>
+            <p class="text-sm font-semibold text-white">Special Issue</p>
+          </div>
+        </div>
+        <p class="mt-5 max-w-sm text-sm leading-relaxed">
+          {site.title}: {site.subtitle}
+        </p>
+      </div>
+
+      <nav class="md:col-span-3" aria-label="Footer">
+        <p class="text-xs font-semibold tracking-[0.14em] text-slate-500 uppercase">
+          Sections
+        </p>
+        <ul class="mt-4 space-y-2">
+          {
+            navItems.map((item) => (
+              <li>
+                <a href={`#${item.id}`} class="text-sm transition hover:text-white">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="md:col-span-4">
+        <p class="text-xs font-semibold tracking-[0.14em] text-slate-500 uppercase">
+          Resources
+        </p>
+        <ul class="mt-4 space-y-2">
+          <li>
+            <a
+              href={site.links.submission}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 text-sm transition hover:text-white"
+            >
+              IEEE Submission Portal
+              <Icon name="arrow-up-right" class="size-3" />
+            </a>
+          </li>
+          <li>
+            <a
+              href={site.links.authorGuidelines}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 text-sm transition hover:text-white"
+            >
+              TPAMI author guidelines
+              <Icon name="arrow-up-right" class="size-3" />
+            </a>
+          </li>
+          <li>
+            <a
+              href={site.links.journalHome}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 text-sm transition hover:text-white"
+            >
+              IEEE TPAMI home
+              <Icon name="arrow-up-right" class="size-3" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="my-10 border-white/10" />
+
+    <div class="space-y-4 text-xs leading-relaxed text-slate-500">
+      <p>{site.footerNote}</p>
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+        <p>© {year} Guest Editorial Team. Last updated {updated}.</p>
+        <a
+          href="#top"
+          class="transition hover:text-white"
+          rel="noopener"
+        >
+          Back to top
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

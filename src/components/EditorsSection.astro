@@ -1,0 +1,27 @@
+---
+import { editors } from '../config/editors';
+import { editorsSection } from '../config/content';
+import SectionHeader from './SectionHeader.astro';
+import EditorCard from './EditorCard.astro';
+
+const lead = editors.find((e) => e.role === 'lead');
+const guests = editors.filter((e) => e.role !== 'lead');
+---
+
+<section id="editors" class="section bg-white dark:bg-ink-950">
+  <div class="container-page">
+    <SectionHeader
+      eyebrow={editorsSection.eyebrow}
+      title={editorsSection.title}
+      lead={editorsSection.intro}
+    />
+
+    <div class="mt-8 space-y-4">
+      {lead && <EditorCard editor={lead} variant="lead" />}
+
+      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {guests.map((editor) => <EditorCard editor={editor} />)}
+      </div>
+    </div>
+  </div>
+</section>

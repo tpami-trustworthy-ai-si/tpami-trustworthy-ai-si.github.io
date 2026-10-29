@@ -1,0 +1,14 @@
+---
+import { aimsAndScope } from '../config/content';
+import SectionHeader from './SectionHeader.astro';
+---
+
+<section id="scope" class="section bg-white dark:bg-ink-950">
+  <div class="container-page">
+    <SectionHeader eyebrow={aimsAndScope.eyebrow} title={aimsAndScope.title} />
+    <div class="mt-7 max-w-4xl space-y-5 text-base leading-relaxed text-slate-600 sm:text-[1.0625rem] dark:text-slate-400">
+      {aimsAndScope.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      <p class="border-l-2 border-brand-200 pl-5 text-slate-700 dark:border-accent-400/30 dark:text-slate-300">{aimsAndScope.lifecycle}</p>
+    </div>
+  </div>
+</section>

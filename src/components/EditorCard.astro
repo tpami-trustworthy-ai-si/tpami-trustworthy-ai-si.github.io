@@ -1,0 +1,26 @@
+---
+import type { Editor } from '../config/editors';
+import EditorAvatar from './EditorAvatar.astro';
+import EditorLinks from './EditorLinks.astro';
+
+interface Props { editor: Editor; variant?: 'lead' | 'grid'; }
+const { editor, variant = 'grid' } = Astro.props;
+const isLead = variant === 'lead';
+---
+
+<article id={editor.id} class:list={[
+  'card scroll-mt-24',
+  isLead ? 'border-brand-200 bg-brand-50/40 dark:border-accent-400/20 dark:bg-accent-400/[0.05]' : 'card-hover',
+]}>
+  <div class="flex items-start gap-4">
+    <EditorAvatar editor={editor} class={isLead ? 'size-20' : 'size-16'} textClass="text-xl" />
+    <div class="min-w-0 flex-1">
+      <p class="text-[11px] font-semibold tracking-wider text-brand-600 uppercase dark:text-accent-400">
+        {isLead ? 'Lead Guest Editor' : 'Guest Editor'}
+      </p>
+      <h3 class="mt-1 text-lg font-semibold tracking-tight">{editor.name}</h3>
+      <p class="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{editor.affiliation}</p>
+      <div class="mt-3"><EditorLinks editor={editor} /></div>
+    </div>
+  </div>
+</article>

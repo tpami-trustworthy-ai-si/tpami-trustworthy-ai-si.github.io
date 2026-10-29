@@ -1,0 +1,30 @@
+{
+  "name": "tpami-trustworthy-ai-si",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Website for the IEEE TPAMI Special Issue on Trustworthy AI in Pattern Recognition and Computer Vision",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "build:fast": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "check:assets": "node scripts/check-assets.mjs",
+    "og": "node scripts/make-og.mjs"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.14",
+    "astro": "^5.14.1",
+    "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/node": "^26.3.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

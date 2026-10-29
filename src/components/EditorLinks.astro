@@ -1,0 +1,13 @@
+---
+import type { Editor } from '../config/editors';
+import Icon from './Icon.astro';
+interface Props { editor: Editor; }
+const { editor } = Astro.props;
+---
+{editor.homepage && (
+  <a href={editor.homepage} target="_blank" rel="noopener noreferrer"
+    aria-label={`Homepage of ${editor.name}`}
+    class="inline-flex items-center gap-1 text-sm font-medium text-brand-600 underline-offset-4 hover:underline dark:text-accent-400">
+    Homepage <Icon name="arrow-up-right" class="size-3.5" />
+  </a>
+)}

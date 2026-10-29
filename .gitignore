@@ -1,0 +1,20 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# local config
+.env
+.env.*
+
+# editors / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# Internal editorial documents do not belong in this public repository.
+*.docx
+*.doc
